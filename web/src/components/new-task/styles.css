@@ -1,0 +1,25 @@
+.new-task {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: -1.25rem;
+}
+
+.new-task input {
+  width: 80%;
+
+  border: none;
+  background: var(--tertiary-background-color);
+
+  font-size: 1rem;
+  color: var(--secondary-text-color);
+  text-align: center;
+
+  padding: 0.625rem;
+  box-sizing: border-box;
+}
+
+.new-task input::placeholder {
+  color: var(--secondary-text-color);
+}

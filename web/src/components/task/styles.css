@@ -1,0 +1,39 @@
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 0.625rem;
+}
+
+.task form:first-child {
+  width: 100%;
+}
+
+.task input[type=checkbox] {
+  width: 5%;
+}
+
+.task input[type=text] {
+  padding: 0.25rem 0.625rem;
+  width: 100%;
+
+  font-size: 1rem;
+  border: none;
+  color: var(--primary-text-color);
+}
+
+.task input[type=text].finished {
+  text-decoration: line-through;
+}
+
+.task span {
+  margin: 0;
+  padding-left: 0.625rem;
+}
+
+.task button {
+  width: 5%;
+  background: none;
+  border: none;
+}

@@ -1,0 +1,41 @@
+.container {
+  width: 21.875rem;
+  margin: 3.125rem auto;
+}
+
+.title {
+  width: 100%;
+  padding: 1rem 0;
+
+  text-align: center;
+  font-size: 1.125rem;
+  color: var(--secondary-text-color);
+
+  background-color: var(--tertiary-background-color);
+}
+
+.to-do-list {
+  width: 100%;
+  min-height: 15.625rem;
+
+  background: var(--secondary-background-color);
+  box-shadow: 0rem 0.25rem 0.625rem rgba(0, 0, 0, 0.08);
+
+  margin-top: 1.25rem;
+}
+
+.to-do-list.none-task {
+  background-image: url("../../assets/img/bg-task.png");
+  background-repeat: no-repeat;
+  background-position: center 2rem;
+}
+
+.to-do-list.loading {
+  background-image: url("../../assets/img/loading.svg");
+  background-repeat: no-repeat;
+  background-position: center 2rem;
+}
+
+.to-do-list ul {
+  padding: 1.25rem;
+}

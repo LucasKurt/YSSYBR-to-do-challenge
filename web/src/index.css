@@ -1,0 +1,32 @@
+@import './assets/css/variables.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+  box-sizing: border-box;
+	font-family: roboto;
+  font-weight: 400;
+}
+
+body {
+  background: var(--primary-background-color);
+}
+
+ul{
+  list-style: none;
+}
+
+textarea:focus, input:focus, button {
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.error-message {
+  margin-top: 0.625rem;
+  font-size: 0.625rem;
+  color: var(--danger-color);
+}
