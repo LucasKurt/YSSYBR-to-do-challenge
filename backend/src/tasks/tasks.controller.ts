@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { TaskDTO } from 'src/tasks/dtos/task.dto';
+import { TaskFinishedDTO } from './dtos/taskFinished.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -32,8 +33,8 @@ export class TasksController {
   }
 
   @Patch(':id')
-  finished(@Param('id') id: string, @Body('finished') finished: boolean) {
-    return this.taskService.finished(id, finished);
+  finished(@Param('id') id: string, @Body() dto: TaskFinishedDTO) {
+    return this.taskService.finished(id, dto);
   }
 
   @Delete(':id')

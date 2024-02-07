@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('tasks')
 export class Task {
   @PrimaryGeneratedColumn('uuid')
   id: string;

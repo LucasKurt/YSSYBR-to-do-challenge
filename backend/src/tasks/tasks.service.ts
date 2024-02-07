@@ -3,6 +3,7 @@ import { Task } from './entities/task.entity';
 import { Repository } from 'typeorm';
 import { TaskDTO } from 'src/tasks/dtos/task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TaskFinishedDTO } from './dtos/taskFinished.dto';
 
 @Injectable()
 export class TasksService {
@@ -12,7 +13,7 @@ export class TasksService {
   ) {}
 
   async findAll() {
-    return this.taskRepository.find();
+    return this.taskRepository.find({ order: { finished: 1 } });
   }
 
   insert(taskDTO: TaskDTO) {
@@ -34,10 +35,10 @@ export class TasksService {
     return this.taskRepository.save(task);
   }
 
-  async finished(id: string, finished: boolean) {
+  async finished(id: string, taskFinishedDTO: TaskFinishedDTO) {
     const task = await this.taskRepository.preload({
       id,
-      finished,
+      ...taskFinishedDTO,
     });
 
     if (!task) {
