@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePatch } from "../../hooks/usePatch";
 import { usePut } from "../../hooks/usePut";
 import { useDelete } from "../../hooks/useDelete";
-import { useEffect } from "react";
+
 const taskSchema = z.object({
   id: z.string(),
   name: z.string().min(3, "Mínimo 3 caracteres"),
