@@ -4,9 +4,7 @@ import * as z from "zod";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePatch } from "../../hooks/usePatch";
-import { usePut } from "../../hooks/usePut";
-import { useDelete } from "../../hooks/useDelete";
+import { useDeleteTask, useEditTask, useFinishTask } from "../../hooks/useTask";
 
 const taskSchema = z.object({
   id: z.string(),
@@ -17,60 +15,74 @@ const taskSchema = z.object({
 type FormData = z.infer<typeof taskSchema>;
 
 export const TaskComponent = ({ id, name, finished }: FormData) => {
-  const { mutate: path } = usePatch("/tasks", id, { queryKey: ["tasks"] });
-  const { mutate: put } = usePut("/tasks", id, { queryKey: ["tasks"] });
-  const { mutate: remove } = useDelete("/tasks", id, { queryKey: ["tasks"] });
+  const deleteTask = useDeleteTask();
+  const editTask = useEditTask();
+  const finishTask = useFinishTask();
   const {
     register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitted, isValid },
+    trigger,
+    setFocus,
+    formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(taskSchema),
     defaultValues: { id, name, finished },
   });
-  
-  const finishTask = ({
+
+  const onFinish = ({
     currentTarget: { checked },
   }: React.FormEvent<HTMLInputElement>) => {
-    path({ finished: checked });
+    finishTask.mutate({ id, finished: checked });
   };
 
-  const editTask = ({ name }: FormData) => {
-    put({ name });
+  const onEdit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === "Enter") {
+      trigger();
+      editTask.mutate({ id, name: e.currentTarget.value });
+      isValid && e.currentTarget.blur();
+    }
   };
 
-  const deleteTask = () => {
+  const onDelete = () => {
     const confirmDelete = confirm("Deseja deletar a tarefa: " + name);
-    confirmDelete && remove();
+    confirmDelete && deleteTask.mutate(id);
+  };
+
+  const changeBg = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.classList.add("on-focus-bg");
+    e.currentTarget.parentElement?.classList.add("on-focus-bg");
   };
 
   return (
-    <li className="task" {...register("id")}>
-      <input type="checkbox" {...register("finished")} onClick={finishTask} />
+    <li className="task " key={id} {...register("id")}>
+      <input type="checkbox" {...register("finished")} onClick={onFinish} />
 
-      <form onSubmit={handleSubmit(editTask)}>
-        <input
-          type="text"
-          className={finished ? "finished" : ""}
-          {...register("name", {
-            onBlur() {
-              if (!isSubmitted || !isValid) {
-                reset();
-              }
-            },
-          })}
-        />
-        {errors.name && (
-          <span className="error-message">{errors.name.message}</span>
-        )}
-      </form>
+      <input
+        type="text"
+        className={finished ? "finished" : ""}
+        autoComplete="off"
+        {...register("name", {
+          onBlur(e: React.FocusEvent<HTMLInputElement>) {
+            e.currentTarget.classList.remove("on-focus-bg");
+            trigger();
+            if (isValid && e.currentTarget.value) {
+              editTask.mutate({ id, name: e.currentTarget.value });
+            }
+            if (!isValid) {
+              setFocus("name");
+              e.currentTarget.classList.add("on-focus-bg");
+            }
+          },
+        })}
+        onKeyDown={onEdit}
+        onFocus={changeBg}
+      />
+      {errors.name && (
+        <span className="error-message">{errors.name.message}</span>
+      )}
 
-      <form onSubmit={handleSubmit(deleteTask)}>
-        <button type="submit" >
-          <img src={image} alt="icon-trash" />
-        </button>
-      </form>
+      <button onClick={onDelete}>
+        <img src={image} alt="icon-trash" />
+      </button>
     </li>
   );
 };

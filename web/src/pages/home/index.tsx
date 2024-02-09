@@ -1,26 +1,12 @@
 import "./styles.css";
 
 import { TaskComponent } from "../../components/task";
-import { useFetch } from "../../hooks/useFetch";
-import { Task } from "../../types/task";
 import { NewTask } from "../../components/new-task";
+import { useGetTasks } from "../../hooks/useTask";
+import { Task } from "../../api/task";
 
 export const Home = () => {
-  const {
-    data: tasks,
-    isFetching,
-    isSuccess,
-  } = useFetch<Task[]>("tasks");
-
-  // useEffect(() => {
-  //   console.log({
-  //     state: queryClient.getQueryState<Task[]>(["tasks"]),
-  //     queryData: queryClient.getQueryData<Task[]>(["tasks"]),
-  //     fetchData: tasks,
-  //     fetching: isFetching,
-  //     fetched: isFetched,
-  //   });
-  // }, [queryClient, tasks, isFetching]);
+  const { data: tasks, isLoading, isSuccess } = useGetTasks();
 
   return (
     <main className="container">
@@ -28,14 +14,15 @@ export const Home = () => {
       <section
         className={`
         to-do-list 
-        ${isFetching && "loading"} 
-        ${isSuccess && tasks.length == 0 && "none-task"}
+        ${isLoading ? "loading" : undefined} 
+        ${isSuccess && tasks.length == 0 ? "none-task" : undefined}
       `}
       >
         <ul>
-          {tasks?.map((task) => (
-            <TaskComponent key={task.id} {...task} />
-          ))}
+          {isSuccess &&
+            tasks.map((task: Task) => (
+              <TaskComponent key={task.id} {...task} />
+            ))}
         </ul>
       </section>
       <NewTask />
