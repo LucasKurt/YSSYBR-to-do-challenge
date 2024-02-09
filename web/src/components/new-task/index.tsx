@@ -27,8 +27,8 @@ export const NewTask = () => {
     isSubmitSuccessful && reset();
   }, [reset, isSubmitSuccessful]);
 
-  const newTask = (data: FormData) => {
-    createTask.mutate(data);
+  const newTask = async (data: FormData) => {
+    await createTask.mutateAsync(data);
     document.activeElement && (document.activeElement as HTMLElement).blur();
   };
 

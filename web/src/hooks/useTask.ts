@@ -22,9 +22,7 @@ export const useCreateTask = () => {
 
   return useMutation({
     mutationFn: createTask,
-    onSuccess(task) {
-      const tasks: Task[] | undefined = queryClient.getQueryData([key]);
-      tasks && queryClient.setQueryData([key], [...tasks, task]);
+    onSuccess() {
       queryClient.invalidateQueries({queryKey: [key]});
     },
   });
@@ -53,15 +51,7 @@ export const useFinishTask = () => {
 
   return useMutation({
     mutationFn: finishTask,
-    onSuccess(task) {
-      let tasks: Task[] | undefined = queryClient.getQueryData([key]);
-      tasks = tasks?.map((prevTask: Task) => {
-        if (prevTask.id === task.id) {
-          prevTask.finished = task.finished;
-        }
-        return prevTask;
-      });
-      tasks ?? queryClient.setQueryData([key], tasks);
+    onSuccess() {
       queryClient.invalidateQueries({queryKey: [key]});
     },
   });

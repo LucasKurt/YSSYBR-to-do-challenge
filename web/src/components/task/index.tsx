@@ -28,10 +28,10 @@ export const TaskComponent = ({ id, name, finished }: FormData) => {
     defaultValues: { id, name, finished },
   });
 
-  const onFinish = ({
+  const onFinish = async ({
     currentTarget: { checked },
   }: React.FormEvent<HTMLInputElement>) => {
-    finishTask.mutate({ id, finished: checked });
+    await finishTask.mutateAsync({ id, finished: checked });
   };
 
   const onEdit = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -42,9 +42,9 @@ export const TaskComponent = ({ id, name, finished }: FormData) => {
     }
   };
 
-  const onDelete = () => {
+  const onDelete = async () => {
     const confirmDelete = confirm("Deseja deletar a tarefa: " + name);
-    confirmDelete && deleteTask.mutate(id);
+    confirmDelete && await deleteTask.mutateAsync(id);
   };
 
   const changeBg = (e: React.FocusEvent<HTMLInputElement>) => {
