@@ -25,6 +25,7 @@ export const useCreateTask = () => {
     onSuccess(task) {
       const tasks: Task[] | undefined = queryClient.getQueryData([key]);
       tasks && queryClient.setQueryData([key], [...tasks, task]);
+      queryClient.invalidateQueries({queryKey: [key]});
     },
   });
 };
@@ -61,6 +62,7 @@ export const useFinishTask = () => {
         return prevTask;
       });
       tasks ?? queryClient.setQueryData([key], tasks);
+      queryClient.invalidateQueries({queryKey: [key]});
     },
   });
 };
