@@ -6,12 +6,9 @@
   margin-bottom: 0.625rem;
 }
 
-.task form:first-child {
-  width: 100%;
-}
-
 .task input[type=checkbox] {
   width: 5%;
+  margin-left: 0.25rem;
 }
 
 .task input[type=text] {
@@ -21,11 +18,13 @@
   font-size: 1rem;
   border: none;
   color: var(--primary-text-color);
+
 }
 
 .task input[type=text].finished {
   text-decoration: line-through;
 }
+
 
 .task span {
   margin: 0;
@@ -33,7 +32,15 @@
 }
 
 .task button {
+  margin-right: 0.25rem;
   width: 5%;
   background: none;
   border: none;
+}
+
+.task.on-focus-bg {
+  background-color: var(--primary-background-color);
+}
+.task .on-focus-bg {
+  background-color: var(--primary-background-color);
 }
